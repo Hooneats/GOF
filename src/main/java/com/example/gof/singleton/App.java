@@ -27,15 +27,37 @@ public class App {
 
 
     // TODO 직렬화 역직렬화 이용 (다른객체만들어준다.) --> 역직렬화는 readResolve() 로 해결이된다.
-    SettingsV5 instance1 = SettingsV5.getInstance();
+//    SettingsV5 instance1 = SettingsV5.getInstance();
+//    try (ObjectOutput out = new ObjectOutputStream(new FileOutputStream("settings.obj"))) {
+//      out.writeObject(instance1);
+//    }
+//    SettingsV5 instance2 = null;
+//    try (ObjectInput in = new ObjectInputStream(new FileInputStream("settings.obj"))) {
+//      instance2 = (SettingsV5) in.readObject();
+//    }
+//    System.out.println(instance1 == instance2);
+
+
+
+
+
+    SettingsV6 instance1 = SettingsV6.INSTANCE;
     try (ObjectOutput out = new ObjectOutputStream(new FileOutputStream("settings.obj"))) {
       out.writeObject(instance1);
     }
-    SettingsV5 instance2 = null;
+    SettingsV6 instance2 = null;
     try (ObjectInput in = new ObjectInputStream(new FileInputStream("settings.obj"))) {
-      instance2 = (SettingsV5) in.readObject();
+      instance2 = (SettingsV6) in.readObject();
     }
     System.out.println(instance1 == instance2);
+
+    SettingsV6 settings1 = SettingsV6.INSTANCE;
+    Constructor<SettingsV6> constructor = SettingsV6.class.getDeclaredConstructor();
+    constructor.setAccessible(true);
+    SettingsV6 settings2 = constructor.newInstance();
+    System.out.println(settings1 == settings2);
+
+    // TODO --> static inner 클래스와 enum 을 활용해 싱글톤을 구현하는 것을 권장한다.
 
   }
 
